@@ -36,12 +36,14 @@ body * {
 #slides{
   position: relative;
   height: 100%;
-  width: 100%;
+  /* width: auto; */
   list-style: none;
   overflow: hidden;
   float: left;
   padding:0px;
   margin:0px;
+  display: flex;
+  align-items: center;
 }
 
 .slide{

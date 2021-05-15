@@ -33,6 +33,6 @@ function animateSlides(direction) {
     snapX = -current * slideWidth;
     console.log("current " + current)
     console.log(snapX)
-    TweenLite.to(slides03, 1, { x: snapX });
+    TweenLite.to(slides01, 1, { x: snapX });
 
 }
