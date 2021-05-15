@@ -1,0 +1,22 @@
+{
+  "slide_01": {
+    "img_url": "01.jpg",
+    "click_url": "https:\/\/www.google.com\/search?q=Cloudy+With+A+Chance+of+Meatballs"
+  },
+  "slide_02": {
+    "img_url": "02.jpg",
+    "click_url": "https:\/\/www.google.com\/search?q=The+Adventures+of+Tintin"
+  },
+  "slide_03": {
+    "img_url": "03.jpg",
+    "click_url": "https:\/\/www.google.com\/search?q=Shrek+Forever"
+  },
+  "slide_04": {
+    "img_url": "04.jpg",
+    "click_url": "https:\/\/www.google.com\/search?q=Smurfs+2"
+  },
+  "slide_05": {
+    "img_url": "05.jpg",
+    "click_url": "https:\/\/www.google.com\/search?q=Dragons+p1"
+  }
+}
