@@ -1,38 +1,104 @@
-var slide;
-var numSlides;
-var slideWidth = 300;
-var slideDelay = 3;
-var slideDuration = 0.3;
+const prevButton = document.querySelector("#arrow_prev");
+const nextButton = document.querySelector("#arrow_next");
+const reel = document.querySelector("#slides");
 
-var snapX;
-var current = 0;
+let data_in;
+let dynamic_slides; // document.querySelectorAll(".slide");
 
-var prevButton = document.querySelector("#arrow_prev");
-var nextButton = document.querySelector("#arrow_next");
+// animation related
+const interval= 3000;
+const slideDuration = 0.5;
+const slideWidth = 300;
 
-var slides01 = document.querySelector("#slides");
-var slides02 = document.querySelectorAll(".slide");
-var slides03 = document.querySelector(".slide");
-var logos = document.getElementById("logo");
+const startingX = slideWidth * -1;
+  let snapX;
+let gotoIndex;
+let current = 1;
 
-console.log("current " + current)
+let lastNode = 5; // *last Node
+let reelLength; //dynamic_slides.length
 
-prevButton.addEventListener("click", function () {
-    current--; 
-    animateSlides(1);
-  });
-  
-nextButton.addEventListener("click", function () {
-    current++;
-    animateSlides(-1);
-  });
+start();
 
+prevButton.addEventListener("click", function() {
+  moveBackward()
+});
 
-function animateSlides(direction) {
+nextButton.addEventListener("click", function() {
+  moveForward()
+});
 
-    snapX = -current * slideWidth;
-    console.log("current " + current)
-    console.log(snapX)
-    TweenLite.to(slides01, 1, { x: snapX });
+function moveBackward() {
+  gotoIndex = current-1;
+  animateSlides(gotoIndex);
+  // console.log("gotoIndex " + gotoIndex + ",current " + current)
+}
 
+function moveForward() {
+  gotoIndex = current+1;
+  animateSlides(gotoIndex);
+  // console.log("gotoIndex " + gotoIndex + ",current " + current)
+}
+
+setInterval(() => {moveForward()},interval)
+
+function animateSlides(gotoIndex) {
+  console.log("gotoIndex " + gotoIndex + ",current " + current)
+      snapX = -(gotoIndex) * slideWidth;
+    TweenLite.to(reel, slideDuration, {
+      x: snapX,
+      onComplete: checkEnd
+    });
+}
+
+function checkEnd() {
+    if (gotoIndex > lastNode) {
+        TweenLite.killTweensOf(reel, true)
+        TweenLite.set(reel, {
+            x: startingX
+        });
+        gotoIndex = 1;
+    } else if (gotoIndex <= 0) {
+        TweenLite.killTweensOf(reel, true)
+        TweenLite.set(reel, {
+            x: lastNode * slideWidth * -1
+        });
+        gotoIndex = lastNode;
+    }
+  current = gotoIndex;
+  console.log("gotoIndex " + gotoIndex + ",current " + current)
+}
+
+function start() {
+    //loading from json file
+    fetch("data.json")
+        .then(response => response.json())
+        .then(data => {
+            console.log("data " + data)
+        })
+
+    //add last image as fist slide
+    addSlide(lastNode);
+    //add the slides
+    for (i = 1; i < 6; i++) {
+        addSlide(i)
+    }
+    //add 1st image as last slide
+    addSlide(1)
+
+    dynamic_slides = document.querySelectorAll(".slide");
+    reelLength = dynamic_slides.length
+
+    TweenLite.set(reel, {
+        x: startingX
+    });
+
+}
+
+function addSlide(num) {
+  //add li with .slide & .slide
+    let li = document.createElement('li');
+    li.setAttribute('class', 'slide ');
+    li.style.backgroundImage = "url('0" + num + ".jpg')";
+    document.getElementById('slides').appendChild(li)
 }
