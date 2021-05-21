@@ -68,6 +68,7 @@ body * {
 
 #exit {
   width: 100%;
+  /* clicktag on image area, not entire banner */
   height: 190px;
   z-index: 10;
   background: rgba(255,255,255,0);
@@ -87,3 +88,68 @@ body * {
   left: auto;
   right: 12px;
 }
+
+/* Preloader */
+.preloader {
+  background: #fff;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 999; }
+  .preloader .circle {
+    -webkit-animation: spin 0.5s linear infinite;
+            animation: spin 0.5s linear infinite;
+    border: 5px solid #ddd;
+    border-bottom-color: #333;
+    border-radius: 50%;
+    height: 40px;
+    left: 50%;
+    margin-left: -22.5px;
+    margin-top: -22.5px;
+    position: absolute;
+    top: 50%;
+    -webkit-transition: all 0.7s ease-in-out;
+    -o-transition: all 0.7s ease-in-out;
+    transition: all 0.7s ease-in-out;
+    width: 40px; 
+}
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } 
+}
+
+@keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); }
+}
+
+.disappear{
+  animation: vanish 1s forwards;
+}
+@-webkit-keyframes vanish {
+  100%{
+   opacity: 0;
+   visibility: hidden; 
+  }
+}
+
+@keyframes vanish {
+  100%{
+   opacity: 0;
+   visibility: hidden; 
+  }
+}
+
+
+
+  
+            
