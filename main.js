@@ -6,6 +6,7 @@ const reel = document.querySelector("#slides");
 //-------------------
 // animation related
 //-------------------
+
 const interval= 3000;
 const slideDuration = 0.5;
 const slideWidth = 300;
@@ -13,7 +14,8 @@ const slideWidth = 300;
 //-------------------
 // start position
 //-------------------
-const startingX = slideWidth * -1;
+
+const startingX = slideWidth * -1; // start point is offset by a slide width
 let snapX;
 let gotoIndex;
 let current = 1;
@@ -27,15 +29,12 @@ let lastNode;
 let reelLength;
 
 var slideData = [];
+
 //-------------------
-// slides related
+// Data
 //-------------------
 
-function start() {
-  getArray();
-}
-
-function getArray() {
+function getData() {
   var dataArray = [];
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
@@ -49,21 +48,27 @@ function getArray() {
 
 }
 
-function toObject(data_import) {
-  var data_= []
-  for (var key in data_import) {
-      var obj = {};
-      obj.name = key;
-      obj.imgURL = data_import[key].img_url;
-    obj.clickURL = data_import[key].click_url;
-    data_.push(obj)
+function toObject(data) {
+  var data_import= []
+  for (var key in data) {
+    let obj = {};
+    obj.name = key;
+    obj.imgURL = data[key].img_url;
+    obj.clickURL = data[key].click_url;
+    data_import.push(obj)
   }
-  slideData = data_
-  lastNode = data_.length;
-  loadSlideIntoReel();
-  // return slideData;
+  slideData = data_import
+  lastNode = data_import.length;
+  preloader();
 }
 
+//-------------------
+// Stage
+//-------------------
+
+function setStage() {
+  loadSlideIntoReel()
+}
 
 function loadSlideIntoReel(){
   reelLength = lastNode + 2;
@@ -85,17 +90,9 @@ function loadSlideIntoReel(){
   TweenLite.set(reel, {
       x: startingX
   });
+  addExitHandler();
   autoplay();
 }
-
-function addSlide(num) {
-  //add li with .slide class & slidename as another class 
-  let li = document.createElement('li');
-  li.setAttribute('class', "slide " + slideData[num].name);
-  li.style.backgroundImage = "url('" + slideData[num].imgURL + "')";
-  document.getElementById('slides').appendChild(li)
-}
-
 
 prevButton.addEventListener("click", function() {
   moveBackward()
@@ -105,20 +102,28 @@ nextButton.addEventListener("click", function() {
   moveForward()
 });
 
+function addSlide(num) {
+  //add li with .slide class & slidename as another class 
+  let li = document.createElement('li');
+  li.setAttribute('class', "slide " + slideData[num].name);
+  li.style.backgroundImage = "url('" + slideData[num].imgURL + "')";
+  document.getElementById('slides').appendChild(li)
+}
+
 function moveBackward() {
   gotoIndex = current-1;
   animateSlides(gotoIndex);
-  checkIndex()
+  checkConsoleIndex
 }
 
 function moveForward() {
   gotoIndex = current+1;
   animateSlides(gotoIndex);
-  checkIndex()
+  checkConsoleIndex
 }
 
-function checkIndex() {
-  console.log("gotoIndex " + gotoIndex + ",current " + current)
+function checkConsoleIndex() {
+  // console.log("gotoIndex " + gotoIndex + ",current " + current)
 }
 
 function autoplay() {
@@ -126,7 +131,7 @@ function autoplay() {
 }
 
 function animateSlides(gotoIndex) {
-  checkIndex()
+  checkConsoleIndex
   snapX = -(gotoIndex) * slideWidth;
   TweenLite.to(reel, slideDuration, {
       x: snapX,
@@ -149,18 +154,8 @@ function checkEnd() {
         gotoIndex = lastNode;
     }
   current = gotoIndex;
-  checkIndex()
+  checkConsoleIndex
 }
-
-function getClickTag(i) {
-  let icurrent = i - 1;
-  let click_url = slideData[icurrent].clickURL;
-  console.log(click_url)
-
-  return click_url;
-
-}
-
 
 function addExitHandler() {
   exitArea.addEventListener('click', function () {

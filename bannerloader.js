@@ -24,25 +24,29 @@ function pageLoadedHandler() {
 }
 
 function adVisibilityHandler() {
-    preloader();
+    getData();
 }
 
 function preloader() {
-    var preloader = document.querySelector(".preloader")
+    let preloader = document.querySelector(".preloader")
+    let stageImages = document.querySelectorAll('img');
+    let slideImg = new Image();
 
-    let images = document.querySelectorAll('img');
     let loaded = 0;
 
-    for (let i = 0; i < images.length; i++) {
-        images[i].addEventListener("load", trackProgress, true);
-        images[i].src = images[i].getAttribute('src');
-        trackProgress()
-        // TO DO : not only the controls, but also include the slide images
+    for (let i = 0; i < stageImages.length; i++) {
+        stageImages[i].addEventListener("load", trackProgress, true);
+        stageImages[i].src = stageImages[i].getAttribute('src');
+    }
+    for (let i = 0; i < slideData.length; i++) {
+        slideImg.src = slideData[i].imgURL;
+        trackProgress();
     }
 
     function trackProgress() {
         loaded++;
-        if (loaded == images.length) {
+        let totalImages = stageImages.length+slideData.length
+        if (loaded == totalImages) {
             removePreloader();
         }
     }
@@ -54,6 +58,5 @@ function preloader() {
 }
 
 function completeHandler() {
-    addExitHandler();
-    start();
+    loadSlideIntoReel();
 }
