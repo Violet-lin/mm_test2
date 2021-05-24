@@ -3,55 +3,99 @@ const nextButton = document.querySelector("#arrow_next");
 const exitArea = document.querySelector("#exit");
 const reel = document.querySelector("#slides");
 
-// let data={};
-let dynamic_slides;
 //-------------------
 // animation related
 //-------------------
-
 const interval= 3000;
 const slideDuration = 0.5;
 const slideWidth = 300;
 
+//-------------------
+// start position
+//-------------------
 const startingX = slideWidth * -1;
 let snapX;
 let gotoIndex;
 let current = 1;
 
-let lastNode = 5; 
-let reelLength; 
+//-------------------
+// slides related
+//-------------------
 
-start();
+const jsonPath = "data.json"; // easiler to change path at the top
+let lastNode; 
+let reelLength;
+
+var slideData = [];
+//-------------------
+// slides related
+//-------------------
 
 function start() {
-  //loading from json file
-  fetch("data.json")
-      .then(response => response.json())
-      .then(data => {
-        lastNode = Object.keys(data).length;
-      })
-  //----------------------
-  //add last image as fist slide
-  //----------------------
-  addSlide(lastNode);
-  //----------------------
-  //add the slides
-  //----------------------
-  for (i = 1; i < 6; i++) {
-      addSlide(i)
+  getArray();
+}
+
+function getArray() {
+  var dataArray = [];
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      let data = JSON.parse(this.responseText);
+      toObject(data);
+    }
+  };
+  xmlhttp.open("GET", jsonPath, true);
+  xmlhttp.send();
+
+}
+
+function toObject(data_import) {
+  var data_= []
+  for (var key in data_import) {
+      var obj = {};
+      obj.name = key;
+      obj.imgURL = data_import[key].img_url;
+    obj.clickURL = data_import[key].click_url;
+    data_.push(obj)
   }
-  //----------------------
-  //add 1st image as last slide
-  //----------------------
-  addSlide(1)
+  slideData = data_
+  lastNode = data_.length;
+  loadSlideIntoReel();
+  // return slideData;
+}
+
+
+function loadSlideIntoReel(){
+  reelLength = lastNode + 2;
+
+  // add last image as fist slide
+  // array is smaller by a number
+  addSlide(lastNode - 1);
+  
+  // add the slides from Json chronologically
+  for (i = 0; i <lastNode; i++) {
+    addSlide(i);
+  }
+
+  // add 1st image as last slide
+  addSlide(0);
 
   dynamic_slides = document.querySelectorAll(".slide");
-  reelLength = dynamic_slides.length
 
   TweenLite.set(reel, {
       x: startingX
   });
+  autoplay();
 }
+
+function addSlide(num) {
+  //add li with .slide class & slidename as another class 
+  let li = document.createElement('li');
+  li.setAttribute('class', "slide " + slideData[num].name);
+  li.style.backgroundImage = "url('" + slideData[num].imgURL + "')";
+  document.getElementById('slides').appendChild(li)
+}
+
 
 prevButton.addEventListener("click", function() {
   moveBackward()
@@ -74,8 +118,9 @@ function moveForward() {
 }
 
 function checkIndex() {
-  // console.log("gotoIndex " + gotoIndex + ",current " + current)
+  console.log("gotoIndex " + gotoIndex + ",current " + current)
 }
+
 function autoplay() {
   setInterval(() => {moveForward()},interval)
 }
@@ -107,27 +152,18 @@ function checkEnd() {
   checkIndex()
 }
 
-function addSlide(num) {
-  //add li with .slide & .slide
-    let li = document.createElement('li');
-    li.setAttribute('class', 'slide ');
-    li.style.backgroundImage = "url('0" + num + ".jpg')";
-    document.getElementById('slides').appendChild(li)
+function getClickTag(i) {
+  let icurrent = i - 1;
+  let click_url = slideData[icurrent].clickURL;
+  console.log(click_url)
+
+  return click_url;
+
 }
 
-function getClickTag(i) {
-  fetch("data.json")
-  .then(response => response.json())
-  .then(data => {
-    var click_url = "data.slide_0" + i + ".img_url";
-    return click_url;
-  })
-}
 
 function addExitHandler() {
   exitArea.addEventListener('click', function () {
-    Enabler.exit('exit', getClickTag[current]);
-    // TO DO: Callback function to get the click_url
+    Enabler.exit('exit', slideData[current-1].clickURL);
   });
 }
-// TO DO: Refactor
