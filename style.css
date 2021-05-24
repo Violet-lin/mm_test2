@@ -52,7 +52,7 @@ body * {
   padding: 0;
   height: 100%;
   width: 300px;
-  background: url(01.jpg);
+  background: url(img/01.jpg);
   background-size: cover;
   background-position: center;
   list-style: none;

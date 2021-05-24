@@ -39,12 +39,13 @@ function preloader() {
         stageImages[i].src = stageImages[i].getAttribute('src');
     }
     for (let i = 0; i < slideData.length; i++) {
-        slideImg.src = slideData[i].imgURL;
+        slideImg.src = "./img/" + slideData[i].imgURL;
         trackProgress();
     }
 
     function trackProgress() {
         loaded++;
+        
         let totalImages = stageImages.length+slideData.length
         if (loaded == totalImages) {
             removePreloader();

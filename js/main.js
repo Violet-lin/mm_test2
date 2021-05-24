@@ -108,7 +108,7 @@ function addSlide(num) {
   //add li with .slide class & slidename as another class 
   let li = document.createElement('li');
   li.setAttribute('class', "slide " + slideData[num].name);
-  li.style.backgroundImage = "url('" + slideData[num].imgURL + "')";
+  li.style.backgroundImage = "url('./img/" + slideData[num].imgURL + "')";
   document.getElementById('slides').appendChild(li)
 }
 
