@@ -1,8 +1,10 @@
 const prevButton = document.querySelector("#arrow_prev");
 const nextButton = document.querySelector("#arrow_next");
 const exitArea = document.querySelector("#exit");
+const logoArea = document.querySelector("#logo");
 const reel = document.querySelector("#slides");
 
+const mediamonks_url = "https://www.mediamonks.com/richmedia/"
 //-------------------
 // animation related
 //-------------------
@@ -160,5 +162,8 @@ function checkEnd() {
 function addExitHandler() {
   exitArea.addEventListener('click', function () {
     Enabler.exit('exit', slideData[current-1].clickURL);
+  });
+  logoArea.addEventListener('click', function () {
+    Enabler.exit('exit', mediamonks_url);
   });
 }

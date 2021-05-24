@@ -77,6 +77,10 @@ body * {
   cursor: pointer;
 }
 
+#logo {
+  cursor: pointer;
+}
+
 .item_arrow {
   position: absolute;
   top: 16px;
