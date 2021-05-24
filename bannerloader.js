@@ -58,5 +58,5 @@ function preloader() {
 }
 
 function completeHandler() {
-    loadSlideIntoReel();
+    setStage();
 }
